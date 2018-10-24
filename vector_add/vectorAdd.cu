@@ -7,14 +7,9 @@
 //
 
 #include <stdio.h>
-#include <iostream>
-#include <time.h>
-#include <stdlib.h>
 #include <cuda.h>
-using namespace std;
 
 #define BLOCK_DIM 256
-#define N 400
 
 /**
  * This is a kernel function which mainly deal with the computation in vector add
@@ -45,6 +40,14 @@ void vecAdd(float* h_A,
             float* h_C,
             int    n){
     
+    // Using device parallel calculate the result and finally print the time
+    cudaEvent_t start, stop;
+    float elapsedTime = 0.0;
+    
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+    cudaEventRecord(start, 0);
+    
     int size = n * sizeof(float);
     float *d_A, *d_B, *d_C;
     
@@ -67,76 +70,15 @@ void vecAdd(float* h_A,
     cudaFree(d_A);
     cudaFree(d_B);
     cudaFree(d_C);
-}
-
-/**
- * This is a function to randomly initial the data in vector A and vector B
- *
- * @param A  One of the vector to be add on device
- * @param B  One of the vector to be add on device
- * @param n  The lenght of the vector
- */
-void initialVector(float* h_A,
-                   float* h_B,
-                   int    n){
-    
-    srand(time(NULL));
-    
-    for(int i = 0;i<n;i++){
-        h_A[i] = rand() % 100;
-        h_B[i] = rand() % 100;
-    }
-}
-
-void vecAddSerial(float* A, float* B, float* C, int n){
-    for(int i = 0;i < n;i++){
-        C[i] = A[i] + B[i];
-    }
-}
-
-int main(){
-    // Memory allocation for h_A, h_B, and h_C
-    float* h_A = new float[N];
-    float* h_B = new float[N];
-    float* h_C = new float[N];
-    
-    // I/O to read h_A and h_B, N elements each
-    initialVector(h_A, h_B, N);
-    
-    // Using device parallel calculate the result and finally print the time
-    cudaEvent_t start, stop;
-    float elapsedTime = 0.0;
-    
-    cudaEventCreate(&start);
-    cudaEventCreate(&stop);
-    cudaEventRecord(start, 0);
-    
-    // Invoke the stub funtion(parallel)
-    vecAdd(h_A, h_B, h_C, N);
     
     cudaEventRecord(stop, 0);
     cudaEventSynchronize(stop);
     
     cudaEventElapsedTime(&elapsedTime, start, stop);
     
-    cout<<"Parallel invoke vectorAdd function need "<<elapsedTime<<"s."<<endl;
+    printf("Parallel invoke vectorAdd function need %.1fs.\n",elapsedTime);
     
     cudaEventDestroy(start);
     cudaEventDestroy(stop);
-    
-    // Using the traditional serial code and finally print the time
-    clock_t serial_start,serial_end;
-    serial_start = clock();
-    
-    // Invoke the vecAdd serial function
-    vecAddSerial(h_A, h_B, h_C, N);
-    
-    serial_end = clock();
-    double dur = (double)(serial_end - serial_start);
-    cout<<"Serial invoke vectorAdd function need "<<dur/CLOCKS_PER_SEC<<"s."<<endl;
-    
-    // Show the result
-    /* for(int i = 0;i < N;i++){
-        cout<<h_A[i]<<" + "<<h_B[i]<<" = "<<h_C[i]<<endl;
-    }*/
 }
+
