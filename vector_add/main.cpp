@@ -66,7 +66,7 @@ int main(){
     vecAddSerial(h_A, h_B, serial_C, N);
     
     gettimeofday(&end,NULL);
-    unsigned long dur = end.tv_sec-start.tv_sec+ (end.tv_usec-start.tv_usec)/1000000;
+    unsigned long dur = 1000000*(end.tv_sec-start.tv_sec)+ end.tv_usec-start.tv_usec;
     cout<<"Serial invoke vectorAdd function need "<<(double)dur/1000000<<"s."<<endl;
     
     // Show the parallel result
