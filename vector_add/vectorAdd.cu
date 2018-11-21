@@ -7,6 +7,7 @@
 //
 
 #include <stdio.h>
+#include <math.h>
 #include <cuda.h>
 
 #define BLOCK_DIM 256
