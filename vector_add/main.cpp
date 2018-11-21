@@ -7,6 +7,7 @@
 //
 #include <iostream>
 #include <time.h>
+#include <sys/time.h>
 #include <stdlib.h>
 #include "vectorAdd.h"
 using namespace std;
@@ -57,15 +58,16 @@ int main(){
     }
     
     // Using the traditional serial code and finally print the time
-    clock_t serial_start,serial_end;
-    serial_start = clock();
+    struct timeval start;
+    struct timeval end;
+    gettimeofday(&start,NULL);
     
     // Invoke the vecAdd serial function
     vecAddSerial(h_A, h_B, serial_C, N);
     
-    serial_end = clock();
-    double dur = (double)(serial_end - serial_start);
-    cout<<"Serial invoke vectorAdd function need "<<dur/CLOCKS_PER_SEC<<"s."<<endl;
+    gettimeofday(&end,NULL);
+    unsigned long dur = 1000000 * (end.tv_sec-start.tv_sec)+ end.tv_usec-start.tv_usec;
+    cout<<"Serial invoke vectorAdd function need "<<dur<<"s."<<endl;
     
     // Show the parallel result
     for(int i = 0;i < N;i++){

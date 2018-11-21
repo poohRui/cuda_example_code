@@ -3,6 +3,6 @@
 all: vectorAdd
 
 vectorAdd:
-	nvcc -o vectorAdd main.cpp vectorAdd.cu
+	nvcc -Wno-deprecated-gpu-targets -o vectorAdd main.cpp vectorAdd.cu
 clean:
 	rm vectorAdd
