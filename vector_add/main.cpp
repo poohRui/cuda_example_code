@@ -17,8 +17,8 @@ using namespace std;
 /**
  * This is a function to randomly initial the data in vector
  *
- * @param v  One of the vector to be add on device
- * @param n  The lenght of the vector
+ * @param v  The vector that will be initial randomly
+ * @param n  The length of the vector
  */
 void initialVector(float* v,
                    int    n){
