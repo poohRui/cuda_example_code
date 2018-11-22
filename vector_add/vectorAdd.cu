@@ -36,10 +36,10 @@ void vecAddKernel(float* A, float* B, float* C, int n){
  * @param h_C  The result of vector add
  * @param n    The length of the vector
  */
-void vecAdd(float* h_A,
-            float* h_B,
-            float* h_C,
-            int    n){
+void vecAddParallel(float* h_A,
+                    float* h_B,
+                    float* h_C,
+                    int    n){
     
     // Using device parallel calculate the result and finally print the time
     cudaEvent_t start, stop;

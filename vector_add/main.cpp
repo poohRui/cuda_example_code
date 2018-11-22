@@ -50,7 +50,7 @@ int main(){
     initialVector(h_B, N);
     
     // Invoke the stub funtion(parallel)
-    vecAdd(h_A, h_B, parallel_C, N);
+    vecAddParallel(h_A, h_B, parallel_C, N);
 
     // Show the parallel result
     for(int i = 0;i < 10;i++){
