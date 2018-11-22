@@ -53,7 +53,7 @@ int main(){
     vecAdd(h_A, h_B, parallel_C, N);
 
     // Show the parallel result
-    for(int i = 0;i < N;i++){
+    for(int i = 0;i < 10;i++){
         cout<<h_A[i]<<" + "<<h_B[i]<<" = "<<parallel_C[i]<<endl;
     }
     
@@ -70,7 +70,7 @@ int main(){
     cout<<"Serial invoke vectorAdd function need "<<(double)dur/1000000<<"s."<<endl;
     
     // Show the parallel result
-    for(int i = 0;i < N;i++){
+    for(int i = 0;i < 10;i++){
         cout<<h_A[i]<<" + "<<h_B[i]<<" = "<<serial_C[i]<<endl;
     }
     
