@@ -15,9 +15,6 @@ using namespace std;
 // Predefine the size of the two vectors
 #define N 400
 
-// Predefine the size of block
-#define BLOCK_DIM 256
-
 /**
  * This is a function to randomly initial the data in vector
  *

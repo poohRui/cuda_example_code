@@ -1,3 +1,6 @@
+#ifndef VECTOR_ADD_H
+#define VECTOR_ADD_H
+
 /**
  * This is a kernel function which mainly deal with the computation in vector add
  *
@@ -23,6 +26,8 @@ void vecAddParallel(float* h_A,
                     float* h_B,
                     float* h_C,
                     int    n);
+
+#endif
 
 
 

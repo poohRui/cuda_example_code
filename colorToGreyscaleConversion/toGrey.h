@@ -1,5 +1,5 @@
-#ifndef TOGREY_H
-#define TOGREY_H
+#ifndef TO_GREY_H
+#define TO_GREY_H
 
 /**
  * To convert the color image to grey scale
@@ -13,5 +13,6 @@ void toGreyParallel(unsigned char * Pout,
                     unsigned char * Pin, 
                     int             width, 
                     int             height);
+
 
 #endif

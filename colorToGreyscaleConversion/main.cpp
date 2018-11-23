@@ -12,11 +12,10 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include "toGrey.h"
 
+#define CHANNELS 3
+
 using namespace std;
 using namespace cv;
-
-#define CHANNELS 3
-#define BLOCK_DIM 16
 
 int main(){
     

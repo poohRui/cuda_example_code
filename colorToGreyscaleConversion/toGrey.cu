@@ -2,6 +2,9 @@
 #include <math.h>
 #include <cuda.h>
 
+#define BLOCK_DIM 16
+#define CHANNELS 3
+
 /**
  * Kernel for conversion
  * 
