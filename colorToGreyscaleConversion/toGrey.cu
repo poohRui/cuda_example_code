@@ -2,9 +2,14 @@
 #include <math.h>
 #include <cuda.h>
 
-#define BLOCK_DIM 16
-#define CHANNELS 3
-
+/**
+ * Kernel for conversion
+ * 
+ * @param Pout  Value of the pixel point in grey scale image
+ * @param Pin   Value of the pixel point in color image
+ * @width       width of image
+ * @height      height of image
+ */
 __global__
 void colorToGreyscaleConversion(unsigned char * Pout, 
                                 unsigned char * Pin, 
@@ -24,7 +29,14 @@ void colorToGreyscaleConversion(unsigned char * Pout,
     } 
 }
 
-
+/**
+ * To convert the color image to grey scale
+ * 
+ * @param Pout  Value of the pixel point in grey scale image
+ * @param Pin   Value of the pixel point in color image
+ * @width       width of image
+ * @height      height of image
+ */
 void toGreyParallel(unsigned char * h_Pout, 
                     unsigned char * h_Pin, 
                     int             width, 

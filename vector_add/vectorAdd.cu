@@ -10,8 +10,6 @@
 #include <math.h>
 #include <cuda.h>
 
-#define BLOCK_DIM 256
-
 /**
  * This is a kernel function which mainly deal with the computation in vector add
  *

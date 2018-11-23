@@ -16,23 +16,7 @@ using namespace std;
 using namespace cv;
 
 #define CHANNELS 3
-
-void serial_conversion(unsigned char * Pout, 
-                       unsigned,char * Pin, 
-                       int             width, 
-                       int             height){
-
-    for(int Col = 0;Col < width;Col++){
-        for(int Row = 0;Row < height;Row++){
-            int greyOffset = Row * width + Col;
-            int rgbOffset = greyOffset*CHANNELS;
-            unsigned char r = Pin[rgbOffset];
-            unsigned char g = Pin[rgbOffset+1];
-            unsigned char b = Pin[rgbOffset+2];
-            Pout[greyOffset] = 0.21f*r + 0.71f*g + 0.07f*b;
-        }
-    }
-}
+#define BLOCK_DIM 16
 
 int main(){
     
@@ -45,10 +29,10 @@ int main(){
     Mat greyImg;
     cvtColor(srcImg, greyImg, CV_BGR2GRAY);
 
-    imwrite("greyImg_opencv.jpg", greyImg);
+    // Save the opencv convert result in "greyImg_opencv.jpg"
+    imwrite("images/greyImg_opencv.jpg", greyImg);
 
-    //uchar3 imgData = srcImg.data;
-
+    // Put Mat data into Pin
     unsigned char* Pin = new unsigned char[height*width*CHANNELS];
     for(int i = 0;i<height;i++){
         const uchar* imgData = srcImg.ptr<uchar>(i);
@@ -61,10 +45,10 @@ int main(){
 
     toGreyParallel(Pout,Pin,width,height);
 
+    // Convert Pout to Mat, save the parallel result into "greyImg_parallel.jpg"
     Mat para_greyImg = Mat(height,width,CV_8UC1);
-
     memcpy(para_greyImg.data,Pout,width*height);
 
-    imwrite("greyImg_parallel.jpg", para_greyImg);
+    imwrite("images/greyImg_parallel.jpg", para_greyImg);
 
 }
