@@ -18,15 +18,17 @@ void colorToGreyscaleConversion(unsigned char * Pout,
         int greyOffset = Row*width + Col;
         int rgbOffset = greyOffset*CHANNELS;
         unsigned char r = Pin[rgbOffset ]; 
-        Pout[grayOffset] = 0.21f*r + 0.71f*g + 0.07f*b;
+        unsigned char g = Pin[rgbOffset+1]; 
+        unsigned char b = Pin[rgbOffset+2]; 
+        Pout[greyOffset] = 0.21f*r + 0.71f*g + 0.07f*b;
     } 
 }
 
 
-void conversionParallel(unsigned char * h_Pout, 
-                        unsigned char * h_Pin, 
-                        int             width, 
-                        int             height){
+void toGreyParallel(unsigned char * h_Pout, 
+                    unsigned char * h_Pin, 
+                    int             width, 
+                    int             height){
     
     // Using device parallel calculate the result and finally print the time
     cudaEvent_t start, stop;
@@ -39,14 +41,15 @@ void conversionParallel(unsigned char * h_Pout,
     unsigned char* d_Pout;
     unsigned char* d_Pin;
 
-    int size = width * height * sizeof(char);
+    size_t size_in = width * height * CHANNELS * sizeof(unsigned char);
+    size_t size_out = width * height * sizeof(unsigned char);
 
     // Allocates object in the device global memory
-    cudaMalloc((void **)&d_Pout, size);
-    cudaMalloc((void **)&d_Pin, size);
+    cudaMalloc((void **)&d_Pout, size_out);
+    cudaMalloc((void **)&d_Pin, size_in);
 
     // Memory data transfer from host to device
-    cudaMemcpy(d_Pin, h_Pin, size, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_Pin, h_Pin, size_in, cudaMemcpyHostToDevice);
 
     // Invoke kernel to do the computation on device
     dim3 dimGrid(ceil(width/(float)(BLOCK_DIM)),ceil(height/(float)(BLOCK_DIM)));
@@ -54,7 +57,7 @@ void conversionParallel(unsigned char * h_Pout,
     colorToGreyscaleConversion<<<dimGrid, dimBlock>>>(d_Pout, d_Pin, width, height);
 
     // Transfer back the result from d_Pout to h_Pout
-    cudaMemcpy(h_Pout, d_Pout, size, cudaMemcpyDeviceToHost);
+    cudaMemcpy(h_Pout, d_Pout, size_out, cudaMemcpyDeviceToHost);
     
     // Free device memory for Pout, Pin
     cudaFree(d_Pout);

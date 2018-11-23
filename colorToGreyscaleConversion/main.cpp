@@ -7,8 +7,13 @@
 //
 
 #include<iostream>
-#include <opencv2\opencv.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include "toGrey.h"
+
 using namespace std;
+using namespace cv;
 
 #define CHANNELS 3
 
@@ -28,20 +33,38 @@ void serial_conversion(unsigned char * Pout,
         }
     }
 }
+
 int main(){
     
     // Load the image into mat
-    Mat srcImg = imread("images/cat.jpg");
+    Mat srcImg = imread("images/cat.jpg",CV_LOAD_IMAGE_COLOR);
     int height = srcImg.rows;
     int width = srcImg.cols;
 
     // Use function of opencv, do serial conversion
-    unsigned char* Pin = srcImg.data;
-    unsigned char* Pout;
+    Mat greyImg;
+    cvtColor(srcImg, greyImg, CV_BGR2GRAY);
 
-    Mat grayImg(height, width, CV_8UC1, Scalar(0));
-    //serial_conversion(serial_Pout, Pin, width, height);
+    imwrite("greyImg_opencv.jpg", greyImg);
 
-    conversionParallel(Pout, Pin, width, height);
-    imshow("test",Pout);
+    //uchar3 imgData = srcImg.data;
+
+    unsigned char* Pin = new unsigned char[height*width*CHANNELS];
+    for(int i = 0;i<height;i++){
+        const uchar* imgData = srcImg.ptr<uchar>(i);
+        for(int j = 0;j<width*CHANNELS;j++){
+            Pin[i*width*CHANNELS+j] = imgData[j];
+        }
+    }
+
+    unsigned char* Pout = new unsigned char[height*width];
+
+    toGreyParallel(Pout,Pin,width,height);
+
+    Mat para_greyImg = Mat(height,width,CV_8UC1);
+
+    memcpy(para_greyImg.data,Pout,width*height);
+
+    imwrite("greyImg_parallel.jpg", para_greyImg);
+
 }
