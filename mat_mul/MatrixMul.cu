@@ -87,7 +87,7 @@ void parallelMatMul(float* h_A, float* h_B, float* h_C, int m, int n, int dim){
     // Invoke kernel
     dim3 dimGrid(ceil(n/(float)(TILE_WIDTH)),ceil(m/(float)(TILE_WIDTH)),1);
     dim3 dimBlock(TILE_WIDTH, TILE_WIDTH,1);
-    MatrixMulKernel<<<dimGrid, dimBlock>>>(d_A, d_B, d_C, pitch_A, n, dim);
+    MatrixMulKernel<<<dimGrid, dimBlock>>>(d_A, d_B, d_C, m, n, dim);
 
     cudaMemcpy(h_C, d_C, size_C, cudaMemcpyDeviceToHost);
     
