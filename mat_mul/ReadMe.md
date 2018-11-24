@@ -1,4 +1,4 @@
-# Vector Add Example
+# Matrix Multiplication Example
 > 通过串行和并行两种方法，计算矩阵乘矩阵，输出运行结果和运行时间。
 
 ## 函数介绍
