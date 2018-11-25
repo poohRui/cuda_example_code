@@ -1,3 +1,6 @@
+#ifndef MATRIX_MUL_H
+#define MATRIX_MUL_H
+
 /**
  * This is the stub function of parallel Matmul
  *
@@ -14,3 +17,5 @@ void parallelMatMul(float* h_A,
                     int    m, 
                     int    n,
                     int    dim);
+
+#endif
