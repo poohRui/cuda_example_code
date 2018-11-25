@@ -60,13 +60,14 @@ void serialMatmul(float* A,
 }
 
 int main(){
-    const int m = 50;
-    const int n = 50;
-    const int dim = 50;
+    const int m = 1000;
+    const int n = 1000;
+    const int dim = 100;
     float* A = new float[m * dim];
     float* B = new float[dim * n];
     float* serial_C = new float[m * n];
     float* parallel_C = new float[m * n];
+    float* parallel_baseline_C = new float[m * n];
 
     // Initial matrix A(m*dim), matrix B(dim*n)
     srand(time(NULL));
@@ -97,6 +98,16 @@ int main(){
     for(int i = 0;i<10;i++){
         for(int j = 0;j<10;j++){
             cout<<parallel_C[i*n+j]<<" ";
+        }
+        cout<<endl;
+    }
+
+    // Invoke Parallel Baseline Calculation
+    parallelMatMul_baseline(A, B, parallel_baseline_C, m, n, dim);
+
+    for(int i = 0;i<10;i++){
+        for(int j = 0;j<10;j++){
+            cout<<parallel_baseline_C[i*n+j]<<" ";
         }
         cout<<endl;
     }
