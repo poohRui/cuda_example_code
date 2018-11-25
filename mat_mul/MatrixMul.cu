@@ -4,7 +4,16 @@
 
 #define TILE_WIDTH 32
 
-// Kernel MatrixMul function
+/**
+ * This is a kernel MatrixMul function of parallel Matmul
+ *
+ * @param A    Matrix (m,dim)
+ * @param B    Matrix (dim,n)
+ * @param C    Result Matrix (m,n)
+ * @param m      number of row in h_A
+ * @param n      number of column in h_B
+ * @param dim    number of row in h_B
+ */
 __global__
 void MatrixMulKernel(float* A, 
                      float* B, 
@@ -63,8 +72,22 @@ void MatrixMulKernel(float* A,
     }
 }
 
-// Parallel Stub function
-void parallelMatMul(float* h_A, float* h_B, float* h_C, int m, int n, int dim){
+/**
+ * This is a parallel Stub function of parallel Matmul
+ *
+ * @param h_A    Matrix (m,dim)
+ * @param h_B    Matrix (dim,n)
+ * @param h_C    Result Matrix (m,n)
+ * @param m      number of row in h_A
+ * @param n      number of column in h_B
+ * @param dim    number of row in h_B
+ */
+void parallelMatMul(float* h_A, 
+                    float* h_B, 
+                    float* h_C, 
+                    int    m, 
+                    int    n, 
+                    int    dim){
 
     // Using device parallel calculate the result and finally print the time
     cudaEvent_t start, stop;
@@ -112,7 +135,16 @@ void parallelMatMul(float* h_A, float* h_B, float* h_C, int m, int n, int dim){
     cudaEventDestroy(stop);
 }
 
-// Baseline kernel function
+/**
+ * This is a baseline kernel function of parallel Matmul
+ *
+ * @param A    Matrix (m,dim)
+ * @param B    Matrix (dim,n)
+ * @param C    Result Matrix (m,n)
+ * @param m      number of row in h_A
+ * @param n      number of column in h_B
+ * @param dim    number of row in h_B
+ */
 __global__
 void MatrixMulKernel_Baseline(float* A, 
                               float* B, 
@@ -143,7 +175,16 @@ void MatrixMulKernel_Baseline(float* A,
     }
 }
 
-// Baseline Parallel Stub function
+/**
+ * This is a baseline Parallel Stub function of parallel Matmul
+ *
+ * @param h_A    Matrix (m,dim)
+ * @param h_B    Matrix (dim,n)
+ * @param h_C    Result Matrix (m,n)
+ * @param m      number of row in h_A
+ * @param n      number of column in h_B
+ * @param dim    number of row in h_B
+ */
 void parallelMatMul_baseline(float* h_A, 
                              float* h_B, 
                              float* h_C, 
